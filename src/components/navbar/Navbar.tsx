@@ -9,7 +9,7 @@ const Navbar = () => {
         <div className="h-24 flex items-center justify-between">
             {/* LEFT  */}
             <div className="md:hidden lg:block w-[20%]">
-                <Link className="font-bold text-xl text-blue-600" href='/'>Holy Social</Link>
+                <Link className="font-bold text-sm lg:text-xl text-blue-600" href='/'>Holy Social</Link>
             </div>
             {/* CENTER  */}
             <div className="hidden md:flex w-[50%] text-sm items-center justify-between">
