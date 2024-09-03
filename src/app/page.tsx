@@ -1,12 +1,12 @@
-import AddPost from "@/components/home/feed/AddPost"
-import LeftMenu from "@/components/home/leftside/LeftMenu"
-import RightMenu from "@/components/home/rightside/RightMenu"
-import Stories from "@/components/home/feed/Stories"
-import Feed from "@/components/home/feed/Feed"
+import AddPost from "@/components/home/feed/AddPost";
+import LeftMenu from "@/components/home/leftside/LeftMenu";
+import RightMenu from "@/components/home/rightside/RightMenu";
+import Stories from "@/components/home/feed/Stories";
+import Feed from "@/components/home/feed/Feed";
 
 const Homepage = () => {
   return (
-    <div className='flex gap-6 pt-6'>
+    <div className="flex gap-6 pt-6">
       {/* left menu  */}
       <div className="hidden xl:block w-[20%]">
         <LeftMenu />
@@ -21,10 +21,10 @@ const Homepage = () => {
       </div>
       {/* Right menu  */}
       <div className="hidden lg:block w-[30%]">
-      <RightMenu />
+        <RightMenu />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Homepage
+export default Homepage;

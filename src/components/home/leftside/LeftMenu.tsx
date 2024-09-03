@@ -1,10 +1,5 @@
-
 const LeftMenu = () => {
-    return (
-        <div>
-            LeftMenu
-        </div>
-    );
+  return <div>LeftMenu</div>;
 };
 
 export default LeftMenu;
