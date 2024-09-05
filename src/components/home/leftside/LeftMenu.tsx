@@ -16,7 +16,7 @@ const LeftMenu = ({ type }: { type: "home" | "profile" }) => {
         <MenuItem image="/news.png" name="News" />
         <MenuItem image="/courses.png" name="Courses" />
         <MenuItem image="/lists.png" name="Lists" />
-        <MenuItem image="/settings.png" name="Settings" />
+        <MenuItem image="/settings.png" name="Settings" isLast={true} />
       </div>
       <Ad size="sm" />
     </div>

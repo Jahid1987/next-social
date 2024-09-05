@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-
-const MenuItem = ({ image, name }: { image: string; name: string }) => {
+const MenuItem = ({ image, name, isLast }: propsType) => {
   return (
     <>
       <Link
@@ -12,9 +11,19 @@ const MenuItem = ({ image, name }: { image: string; name: string }) => {
         <span>{name}</span>
       </Link>
 
-      <hr className="bottom-1 border-gray-50 w-3/6 self-center" />
+      <hr
+        className={`${
+          isLast ? "hidden" : "bottom-1 border-gray-50 w-3/6 self-center"
+        }`}
+      />
     </>
   );
 };
 
 export default MenuItem;
+
+type propsType = {
+  image: string;
+  name: string;
+  isLast?: boolean;
+};
