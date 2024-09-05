@@ -40,8 +40,6 @@ export async function POST(req: Request) {
       'svix-timestamp': svix_timestamp,
       'svix-signature': svix_signature,
     }) as WebhookEvent
-
-
   } catch (err) {
     console.error('Error verifying webhook:', err)
     return new Response('Error occured', {
@@ -53,7 +51,6 @@ export async function POST(req: Request) {
   // For this guide, you simply log the payload to the console
   const { id } = evt.data
   const eventType = evt.type
-
   // User Created
   if(eventType === 'user.created'){
     try {
@@ -65,6 +62,7 @@ export async function POST(req: Request) {
                 cover: "/noCover.png"
             }
         })
+        
         return new Response("User has been created!", {status: 200})
     } catch (error) {
         console.log(error)
@@ -74,7 +72,7 @@ export async function POST(req: Request) {
   // User Updated
   if(eventType === 'user.updated'){
     try {
-        await prisma.user.update({
+      await prisma.user.update({
             where: {
                 id: evt.data.id
             },
@@ -91,5 +89,5 @@ export async function POST(req: Request) {
     }
   }
 
-  return new Response('Webhook Received', { status: 200 })
+  return new Response('', { status: 200 })
 }

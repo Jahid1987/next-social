@@ -1,16 +1,6 @@
-import prisma from "@/db/db";
 import Image from "next/image";
 
 const Profile = async () => {
-  const users = await prisma.user.findMany({
-    where: {
-      email: "jahid@gmail.com",
-    },
-    include: {
-      posts: true,
-    },
-  });
-  console.log(users[0].posts);
   return (
     <div className="flex flex-col items-center justify-center">
       <div className=" w-full h-64 relative">

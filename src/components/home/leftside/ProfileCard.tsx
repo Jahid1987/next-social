@@ -1,11 +1,30 @@
+import prisma from "@/lib/client";
+import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 
-const ProfileCard = () => {
+const ProfileCard = async () => {
+  const { userId } = auth();
+  if (!userId) return null;
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+    include: {
+      _count: {
+        select: {
+          followers: true,
+        },
+      },
+    },
+  });
+
+  if (!user) return null;
+
   return (
     <div className="p-4 bg-white rounded-lg shadow-md text-sm flex flex-col gap-6">
       <div className="h-20 relative">
         <Image
-          src="https://images.pexels.com/photos/28122625/pexels-photo-28122625/free-photo-of-the-terraced-rice-fields-in-vietnam.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+          src={user?.avatar || "/noAvatar.png"}
           alt=""
           fill
           className="rounded-md object-cover"
