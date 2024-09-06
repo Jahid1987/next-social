@@ -1,7 +1,8 @@
+import { User } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 
-const UserInformation = ({ userId }: { userId: string }) => {
+const UserInformation = ({ user }: { user: User }) => {
   return (
     <div className="p-4 bg-white rounded-lg shadow-md text-sm flex flex-col gap-4">
       {/* TOP  */}
@@ -14,7 +15,11 @@ const UserInformation = ({ userId }: { userId: string }) => {
       {/* BOTTOM  */}
       <div className="flex flex-col gap-4 text-gray-500">
         <div className="flex items-center gap-2">
-          <span className="text-xl text-black">Anwer Jahid</span>
+          <span className="text-xl text-black">
+            {user.name && user.surname
+              ? user.name + " " + user.surname
+              : user.username}
+          </span>
           <span className="text-sm">@Sohel</span>
         </div>
         <p>
@@ -24,26 +29,26 @@ const UserInformation = ({ userId }: { userId: string }) => {
         <div className="flex items-center gap-2">
           <Image src="/map.png" alt="" width={16} height={16} />
           <span>
-            Lining in <b>Dhaka</b>
+            Lining in <b>{user.city || "Not available"}</b>
           </span>
         </div>
         <div className="flex items-center gap-2">
           <Image src="/school.png" alt="" width={16} height={16} />
           <span>
-            Went form <b>AMC</b>
+            Went form <b>{user.school || "Not available"}</b>
           </span>
         </div>
         <div className="flex items-center gap-2">
           <Image src="/work.png" alt="" width={16} height={16} />
           <span>
-            Works at <b>Apple Inc.</b>
+            Works at <b>{user.work || "Not available"}</b>
           </span>
         </div>
         <div className="flex items-center justify-between">
           <div className="flex gap-1 items-center">
             <Image src="/link.png" alt="" width={16} height={16} />
             <Link href="" className="text-blue-500 font-medium">
-              holy.social
+              {user.website || "Not available"}
             </Link>
           </div>
           <div className="flex gap-1 items-center">
