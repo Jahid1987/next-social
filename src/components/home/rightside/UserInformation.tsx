@@ -1,8 +1,51 @@
+import prisma from "@/lib/client";
+import { auth } from "@clerk/nextjs/server";
 import { User } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
+import UserInfoCardInteraction from "./UserInfoCardInteraction";
 
-const UserInformation = ({ user }: { user: User }) => {
+const UserInformation = async ({ user }: { user: User }) => {
+  const createdAt = new Date(user.createdAt);
+  const formatedDate = createdAt.toLocaleDateString("en-Us", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+  let isUserBlocked = false;
+  let isFollowing = false;
+  let isFollowingSent = false;
+  const { userId: currentUserId } = auth();
+  // finding blocked or not
+  if (currentUserId) {
+    const blockRes = await prisma.block.findFirst({
+      where: {
+        blockerId: currentUserId,
+        blockedId: user.id,
+      },
+    });
+    blockRes ? (isUserBlocked = true) : (isUserBlocked = false);
+  }
+  // finding following or not
+  if (currentUserId) {
+    const followRes = await prisma.follower.findFirst({
+      where: {
+        followerId: currentUserId,
+        followingId: user.id,
+      },
+    });
+    followRes ? (isFollowing = true) : (isFollowing = false);
+  }
+  // finding blocked or not
+  if (currentUserId) {
+    const followReqRes = await prisma.followRequest.findFirst({
+      where: {
+        senderId: currentUserId,
+        receiverId: user.id,
+      },
+    });
+    followReqRes ? (isFollowingSent = true) : (isFollowingSent = false);
+  }
   return (
     <div className="p-4 bg-white rounded-lg shadow-md text-sm flex flex-col gap-4">
       {/* TOP  */}
@@ -22,10 +65,7 @@ const UserInformation = ({ user }: { user: User }) => {
           </span>
           <span className="text-sm">@Sohel</span>
         </div>
-        <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Pariatur,
-          expedita.
-        </p>
+        {user.description && <p>{user.description}</p>}
         <div className="flex items-center gap-2">
           <Image src="/map.png" alt="" width={16} height={16} />
           <span>
@@ -53,16 +93,16 @@ const UserInformation = ({ user }: { user: User }) => {
           </div>
           <div className="flex gap-1 items-center">
             <Image src="/date.png" alt="" width={16} height={16} />
-            <span>Joined November 2024</span>
+            <span>Joined {formatedDate}</span>
           </div>
         </div>
 
-        <button className="bg-blue-500 p-2 text-white text-sm rounded-md">
-          Follow
-        </button>
-        <span className="text-red-400 self-end text-xs cursor-pointer">
-          Block User
-        </span>
+        <UserInfoCardInteraction
+          userId={user.id}
+          isUserBlocked={isUserBlocked}
+          isFollowing={isFollowing}
+          isFollowingSent={isFollowingSent}
+        />
       </div>
     </div>
   );
