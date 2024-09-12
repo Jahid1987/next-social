@@ -3,6 +3,7 @@ import LeftMenu from "@/components/home/leftside/LeftMenu";
 import Profile from "@/components/home/Profile";
 import RightMenu from "@/components/home/rightside/RightMenu";
 import prisma from "@/lib/client";
+import { notFound } from "next/navigation";
 
 const ProfilePage = async ({ params }: { params: { username: string } }) => {
   const username = params.username;
@@ -11,7 +12,8 @@ const ProfilePage = async ({ params }: { params: { username: string } }) => {
       username,
     },
   });
-  if (!user) return null;
+
+  if (!user) return notFound();
   return (
     <div className="flex gap-6 pt-6">
       {/* left menu  */}
