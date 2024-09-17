@@ -20,9 +20,9 @@ const ProfileCard = async () => {
       },
     },
   });
-
-  if (!user) return notFound();
-
+  console.log("ok");
+  if (!user) return null;
+  console.log("ok"); // Here I am not finding user from db because it's not daving from
   return (
     <div className="p-4 bg-white rounded-lg shadow-md text-sm flex flex-col gap-6">
       <div className="h-20 relative">

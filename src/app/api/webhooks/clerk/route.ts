@@ -71,6 +71,7 @@ export async function POST(req: Request) {
   }
   // User Updated
   if(eventType === 'user.updated'){
+    
     try {
       await prisma.user.update({
             where: {
@@ -79,7 +80,6 @@ export async function POST(req: Request) {
             data: {
                 username: JSON.parse(body).data.username,
                 avatar: JSON.parse(body).data.image_url || "/noAvatar.png",
-                
             }
         })
         return new Response("User has been updated!", {status: 200})

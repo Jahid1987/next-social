@@ -18,7 +18,6 @@ const Profile = async ({ username }: { username: string }) => {
       },
     },
   });
-
   if (!user) notFound();
 
   const { userId: currentUserId } = auth();
