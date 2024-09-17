@@ -1,8 +1,21 @@
+import prisma from "@/lib/client";
 import { User } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 
-const UserMedia = ({ user }: { user: User }) => {
+const UserMedia = async ({ user }: { user: User }) => {
+  const postsWithMedia = await prisma.post.findMany({
+    where: {
+      userId: user.id,
+      img: {
+        not: null,
+      },
+    },
+    take: 8,
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
   return (
     <div className="p-4 bg-white rounded-lg shadow-md text-sm flex flex-col gap-4">
       {/* TOP  */}
@@ -14,54 +27,18 @@ const UserMedia = ({ user }: { user: User }) => {
       </div>
       {/* BOTTOM  */}
       <div className="flex justify-start flex-wrap gap-1">
-        <div className="relative w-1/5 h-24">
-          <Image
-            src="https://images.pexels.com/photos/27926640/pexels-photo-27926640/free-photo-of-handsome-man-with-mustache-in-shirt.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            alt=""
-            fill
-            className="object-cover rounded-md"
-          />
-        </div>
-        <div className="relative w-1/5 h-24">
-          <Image
-            src="https://images.pexels.com/photos/27926640/pexels-photo-27926640/free-photo-of-handsome-man-with-mustache-in-shirt.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            alt=""
-            fill
-            className="object-cover rounded-md"
-          />
-        </div>
-        <div className="relative w-1/5 h-24">
-          <Image
-            src="https://images.pexels.com/photos/27926640/pexels-photo-27926640/free-photo-of-handsome-man-with-mustache-in-shirt.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            alt=""
-            fill
-            className="object-cover rounded-md"
-          />
-        </div>
-        <div className="relative w-1/5 h-24">
-          <Image
-            src="https://images.pexels.com/photos/27926640/pexels-photo-27926640/free-photo-of-handsome-man-with-mustache-in-shirt.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            alt=""
-            fill
-            className="object-cover rounded-md"
-          />
-        </div>
-        <div className="relative w-1/5 h-24">
-          <Image
-            src="https://images.pexels.com/photos/27926640/pexels-photo-27926640/free-photo-of-handsome-man-with-mustache-in-shirt.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            alt=""
-            fill
-            className="object-cover rounded-md"
-          />
-        </div>
-        <div className="relative w-1/5 h-24">
-          <Image
-            src="https://images.pexels.com/photos/27926640/pexels-photo-27926640/free-photo-of-handsome-man-with-mustache-in-shirt.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            alt=""
-            fill
-            className="object-cover rounded-md"
-          />
-        </div>
+        {postsWithMedia.length
+          ? postsWithMedia.map((post) => (
+              <div key={post.id} className="relative w-1/5 h-24">
+                <Image
+                  src={post.img!} // Note(non-null assertion): here post.img! is used because image could be null according to schema. But, I am assuring that it won't be because I query those posts only that have image in the top.
+                  alt=""
+                  fill
+                  className="object-cover rounded-md"
+                />
+              </div>
+            ))
+          : "No media found"}
       </div>
     </div>
   );
